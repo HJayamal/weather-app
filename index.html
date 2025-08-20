@@ -71,6 +71,11 @@
         font-size: 1.5rem;
       }
     }
+
+    body {
+  transition: background 1s ease;
+}
+
   </style>
 </head>
 <body>
@@ -112,6 +117,9 @@
         })
         .then(data => {
           const { name, main, weather, wind } = data;
+
+          setBackground(main.temp);
+
           weatherInfo.innerHTML = `
             <img class="weather-icon" src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png" alt="${weather[0].description}" />
             <h2>${name}</h2>
@@ -123,12 +131,26 @@
             </div>
           `;
           document.getElementById('cityInput').value = '';
+          
         })
         .catch(err => {
           weatherInfo.innerHTML = '';
           errorMsg.textContent = err.message;
         });
     }
+
+    function setBackground(temp) {
+  const body = document.body;
+
+  if (temp < 10) {
+    body.style.background = "linear-gradient(to right, #1e3c72, #2a5298)"; // cold
+  } else if (temp >= 10 && temp <= 25) {
+    body.style.background = "linear-gradient(to right, #56ab2f, #a8e063)"; // mild
+  } else {
+    body.style.background = "linear-gradient(to right, #ff416c, #ff4b2b)"; // hot
+  }
+}
+
   </script>
 </body>
 </html>
